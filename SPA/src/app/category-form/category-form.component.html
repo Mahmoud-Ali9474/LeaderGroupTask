@@ -1,0 +1,55 @@
+<h1 *ngIf="!category.id">New Category</h1>
+<h1 *ngIf="category.id">Edit Product</h1>
+
+<p>
+  {{ category | json }}
+</p>
+<form #f="ngForm" (ngSubmit)="submit()" novalidate>
+  <div class="row">
+    <div class="col-6">
+      <div class="mb-3">
+        <label for="name" class="form-label">Name</label>
+        <input
+          id="name"
+          type="text"
+          class="form-control"
+          [(ngModel)]="category.name"
+          name="name"
+          required
+          #name="ngModel"
+        />
+        <div class="alert alert-danger" *ngIf="name.touched && !name.valid">
+          Please specify the category name.
+        </div>
+      </div>
+      <h2 class="mb-3">Tags</h2>
+      <div class="row">
+        <div *ngFor="let t of tags" class="col-md-3">
+          <div class="checkbox mb-3">
+            <label for="tag{{ t.id }}">
+              <input
+                type="checkbox"
+                id="tag{{ t.id }}"
+                (change)="onTagToggle(t.id, $event)"
+                [checked]="category.tags.includes(t.id)"
+              />
+              {{ t.name }}
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-primary" [disabled]="!f.valid">
+        Save
+      </button>
+      <button
+        type="button"
+        class="btn btn-danger mx-2"
+        *ngIf="category.id"
+        (click)="delete(category.id)"
+      >
+        Delete
+      </button>
+    </div>
+  </div>
+</form>

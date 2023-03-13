@@ -1,0 +1,138 @@
+<div class="row">
+  <div class="col-12">
+    <div class="page-title-box">
+      <h2 class="page-title">Products</h2>
+    </div>
+  </div>
+</div>
+<!-- end page title -->
+<div class="row">
+  <div class="col-sm-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col">
+            <form>
+              <div class="mb-3">
+                <input
+                  type="text"
+                  id="tag"
+                  name="tag"
+                  class="form-control"
+                  placeholder="Type tag to search"
+                  [(ngModel)]="filter.tag"
+                />
+              </div>
+              <div class="mb-3">
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  class="form-control"
+                  placeholder="Type name of product to search"
+                  [(ngModel)]="filter.name"
+                />
+              </div>
+              <div class="mb-3">
+                <input
+                  type="date"
+                  id="date"
+                  name="addedDate"
+                  class="form-control"
+                  placeholder="Type date of product to search"
+                  [(ngModel)]="filter.addedDate"
+                />
+              </div>
+              <div class="d-flex justify-content-center">
+                <button
+                  type="button"
+                  (click)="this.getProducts()"
+                  class="btn btn-sm btn-primary"
+                >
+                  Search
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12 d-flex justify-content-between py-3">
+            <div class="mt-2">
+              <button class="btn btn-danger" (click)="deleteMany()">
+                Delete Selected
+              </button>
+            </div>
+            <div class="mt-2">
+              <button class="btn btn-primary" routerLink="/products/new">
+                Add
+              </button>
+            </div>
+          </div>
+        </div>
+        <div>
+          <table
+            class="table table-colored-bordered table-bordered-info table-striped table-bordered dt-responsive nowrap w-100"
+          >
+            <thead>
+              <tr>
+                <th>
+                  <label for="selectAll">
+                    <input
+                      type="checkbox"
+                      id="selectAll"
+                      (change)="onSelectAll($event)"
+                      [checked]="
+                        chechList.length == products.length &&
+                        products.length != 0
+                      "
+                    />
+                    Select\Unselect All
+                  </label>
+                </th>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Added Date</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Category</th>
+                <th>Tags</th>
+                <th>#</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="!this.products.length">
+                <th colspan="100" scope="row">there is no data to display.</th>
+              </tr>
+
+              <tr *ngFor="let item of this.products">
+                <td>
+                  <input
+                    id="{{ item.id }}"
+                    type="checkbox"
+                    (change)="onChechboxChange(item.id, $event)"
+                    [checked]="chechList.includes(item.id)"
+                  />
+                </td>
+                <td>{{ item.id }}</td>
+                <td>{{ item.title }}</td>
+                <td>{{ item.addedDate | date : "dd/MM/yyyy" }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.price }}</td>
+                <td>{{ item.category.name }}</td>
+                <td>{{ flatProductTags(item) }}</td>
+                <td>
+                  <a
+                    class="link-info"
+                    [routerLink]="['/products/edit', item.id]"
+                    >Edit</a
+                  >
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

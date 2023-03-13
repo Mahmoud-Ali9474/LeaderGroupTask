@@ -1,0 +1,81 @@
+<div class="row">
+  <div class="col-12">
+    <div class="page-title-box">
+      <h2 class="page-title">Categories</h2>
+    </div>
+  </div>
+</div>
+<!-- end page title -->
+<div class="row">
+  <div class="col-sm-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-12">
+            <form>
+              <div class="input-group">
+                <input
+                  type="text"
+                  id="searchTerm"
+                  name="searchTerm"
+                  class="form-control"
+                  placeholder="Type name of category to search"
+                  [(ngModel)]="filter.searchTerm"
+                />
+                <button
+                  type="button"
+                  (click)="this.getCategories()"
+                  class="btn btn-sm btn-primary"
+                >
+                  Search
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12 d-flex justify-content-end py-3">
+            <div class="mt-2">
+              <a class="btn btn-primary" routerLink="/admin/categories/new"
+                >Add</a
+              >
+            </div>
+          </div>
+        </div>
+        <div>
+          <table
+            class="table table-colored-bordered table-bordered-info table-striped table-bordered dt-responsive nowrap w-100"
+          >
+            <thead>
+              <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Tags</th>
+                <th>#</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="!this.categories.length">
+                <th colspan="100" scope="row">there is no data to display.</th>
+              </tr>
+
+              <tr *ngFor="let item of this.categories">
+                <td>{{ item.id }}</td>
+                <td>{{ item.name }}</td>
+                <td>{{ flatCategoriesTags(item) }}</td>
+                <td>
+                  <a
+                    class="link-info"
+                    [routerLink]="['/admin/categories/edit/', item.id]"
+                    >Edit</a
+                  >
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

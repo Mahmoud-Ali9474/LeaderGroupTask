@@ -1,0 +1,77 @@
+<header>
+  <!-- Fixed navbar -->
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <div class="container">
+      <a class="navbar-brand" routerLink="/home">Souq</a>
+
+      <ul class="navbar-nav me-auto mb-2 mb-md-0">
+        <li class="nav-item">
+          <a class="nav-link active" routerLink="/home">Home</a>
+        </li>
+        <li
+          *ngIf="authService.loggedIn() && authService.isCustomer()"
+          class="nav-item"
+        >
+          <a class="nav-link" routerLink="/products">Products</a>
+        </li>
+        <li
+          *ngIf="
+            authService.loggedIn() &&
+            (authService.isAdmin() || authService.isManager())
+          "
+          class="nav-item"
+        >
+          <a class="nav-link" routerLink="/admin/products">Products</a>
+        </li>
+        <li *ngIf="authService.isAdmin()" class="nav-item">
+          <a class="nav-link" routerLink="/admin/categories">Categories</a>
+        </li>
+      </ul>
+      <div *ngIf="loggedIn()" class="dropdown" dropdown>
+        <a class="dropdown-toggle text-light" dropdownToggle>
+          Welcome {{ authService.getUserInfo().name | titlecase }}
+        </a>
+
+        <ul class="dropdown-menu" *dropdownMenu>
+          <li *ngIf="this.authService.isAdmin()">
+            <a class="dropdown-item" routerLink="/admin/products">Admin</a>
+          </li>
+          <li *ngIf="!this.authService.isAdmin()">
+            <hr class="dropdown-divider" />
+          </li>
+          <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
+        </ul>
+      </div>
+      <form
+        *ngIf="!loggedIn()"
+        #loginForm="ngForm"
+        (ngSubmit)="login()"
+        class="d-flex"
+      >
+        <input
+          class="form-control me-2"
+          type="text"
+          placeholder="Username"
+          name="username"
+          [(ngModel)]="model.username"
+          required
+        />
+        <input
+          class="form-control me-2"
+          type="password"
+          placeholder="password"
+          name="password"
+          [(ngModel)]="model.password"
+          required
+        />
+        <button
+          [disabled]="!loginForm.valid"
+          class="btn btn-success"
+          type="submit"
+        >
+          Login
+        </button>
+      </form>
+    </div>
+  </nav>
+</header>
